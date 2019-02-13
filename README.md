@@ -8,6 +8,17 @@ It simply proxies from one TLS-listening host:port to another plaintext
 host:port.
 
 
+Installation
+------------
+
+```
+$ go get github.com/parazyd/tlstun
+```
+
+Make sure you generate or acquire a TLS certificate keypair to use with
+tlstun.
+
+
 Usage
 -----
 
