@@ -29,11 +29,11 @@ import (
 )
 
 var (
-	cert    = flag.String("cert", "server.pem", "Path for Certificate file")
-	key     = flag.String("key", "server-key.pem", "Path for Key file")
-	listen  = flag.String("listen", "127.0.0.1:7443", "Listen address")
-	forward = flag.String("forward", "127.0.0.1:72", "Forward address")
-	verbose = flag.Bool("verbose", false, "Verbose mode")
+	cert    = flag.String("c", "server.pem", "Path for Certificate file")
+	key     = flag.String("k", "server-key.pem", "Path for Key file")
+	listen  = flag.String("l", "127.0.0.1:7443", "Listen address")
+	forward = flag.String("f", "127.0.0.1:72", "Forward address")
+	verbose = flag.Bool("v", false, "Verbose mode")
 )
 
 func tlsConfig(cert, key string) (*tls.Config, error) {

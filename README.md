@@ -24,15 +24,13 @@ Usage
 
 ```
 Usage of ./tlstun:
-  -cert string
+  -c string
         Path for Certificate file (default "server.pem")
-  -forward string
+  -f string
         Forward address (default "127.0.0.1:72")
-  -key string
+  -k string
         Path for Key file (default "server-key.pem")
-  -listen string
+  -l string
         Listen address (default "127.0.0.1:7443")
-  -verbose
-        Verbose mode
-
+  -v    Verbose mode
 ```
