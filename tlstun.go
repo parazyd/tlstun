@@ -1,7 +1,7 @@
 package main
 
 /*
- * Copyright (c) 2019 Ivan Jelincic
+ * Copyright (c) 2019 Ivan Jelincic <parazyd@dyne.org>
  *
  * This file is part of tlstun
  *
@@ -44,7 +44,7 @@ func tlsConfig(cert, key string) (*tls.Config, error) {
 
 	return &tls.Config{
 		Certificates: []tls.Certificate{creds},
-		MinVersion:   tls.VersionTLS12,
+		MinVersion:   tls.VersionTLS13,
 	}, nil
 }
 
