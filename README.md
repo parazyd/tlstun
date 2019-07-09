@@ -24,13 +24,20 @@ Usage
 
 ```
 Usage of ./tlstun:
-  -c string
+  -cacert string
+        Path for CA certificate file (default "ca.pem")
+  -cert string
         Path for Certificate file (default "server.pem")
-  -f string
+  -forward string
         Forward address (default "127.0.0.1:72")
-  -k string
+  -key string
         Path for Key file (default "server-key.pem")
-  -l string
+  -listen string
         Listen address (default "127.0.0.1:7443")
-  -v    Verbose mode
+  -tlsver int
+        TLS version to use (11, 12, 13) (default 13)
+  -verbose
+        Verbose mode
+  -verifyclient
+        Do client verification
 ```
