@@ -92,6 +92,9 @@ func tunnel(conn net.Conn) {
 		io.Copy(client, conn)
 	}()
 	go func() {
+		if *verbose {
+			defer log.Printf("Closed connection from %s\n", conn.RemoteAddr())
+		}
 		defer client.Close()
 		defer conn.Close()
 		io.Copy(conn, client)
