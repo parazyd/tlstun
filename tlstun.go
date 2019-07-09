@@ -119,6 +119,10 @@ func server() (net.Listener, error) {
 func main() {
 	flag.Parse()
 
+	if len(os.Args < 2) {
+		flag.Usage()
+	}
+
 	if *client {
 		if _, err := os.Stat(*cacert); os.IsNotExist(err) {
 			log.Fatal("Cannot find CA certificate.")
