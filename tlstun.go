@@ -48,10 +48,7 @@ func tlsConfig(cert, key string) (*tls.Config, error) {
 		return nil, err
 	}
 
-	tlscfg := &tls.Config{
-		Certificates: []tls.Certificate{creds},
-		MinVersion:   tls.VersionTLS12,
-	}
+	tlscfg := &tls.Config{Certificates: []tls.Certificate{creds}}
 
 	if *client {
 		certpool := x509.NewCertPool()
@@ -64,6 +61,16 @@ func tlsConfig(cert, key string) (*tls.Config, error) {
 		}
 		tlscfg.ClientCAs = certpool
 		tlscfg.ClientAuth = tls.RequireAndVerifyClientCert
+	}
+
+	switch *tlsver {
+	case 11:
+		tlscfg.MinVersion = tls.VersionTLS11
+	case 12:
+		tlscfg.MinVersion = tls.VersionTLS12
+	case 13:
+	default:
+		tlscfg.MinVersion = tls.VersionTLS13
 	}
 
 	return tlscfg, nil
