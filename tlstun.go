@@ -32,13 +32,14 @@ import (
 )
 
 var (
-	cacert  = flag.String("ca", "ca.pem", "Path for CA certificate file")
-	cert    = flag.String("c", "server.pem", "Path for Certificate file")
-	key     = flag.String("k", "server-key.pem", "Path for Key file")
-	listen  = flag.String("l", "127.0.0.1:7443", "Listen address")
-	forward = flag.String("f", "127.0.0.1:72", "Forward address")
-	client  = flag.Bool("vc", false, "Do client verification")
-	verbose = flag.Bool("v", false, "Verbose mode")
+	cacert  = flag.String("cacert", "ca.pem", "Path for CA certificate file")
+	cert    = flag.String("cert", "server.pem", "Path for Certificate file")
+	key     = flag.String("key", "server-key.pem", "Path for Key file")
+	listen  = flag.String("listen", "127.0.0.1:7443", "Listen address")
+	forward = flag.String("forward", "127.0.0.1:72", "Forward address")
+	client  = flag.Bool("verifyclient", false, "Do client verification")
+	verbose = flag.Bool("verbose", false, "Verbose mode")
+	tlsver  = flag.Int("tlsver", 13, "TLS version to use (11, 12, 13)")
 )
 
 func tlsConfig(cert, key string) (*tls.Config, error) {
