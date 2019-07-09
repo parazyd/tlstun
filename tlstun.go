@@ -21,18 +21,23 @@ package main
 
 import (
 	"crypto/tls"
+	"crypto/x509"
+	"errors"
 	"flag"
 	"io"
+	"io/ioutil"
 	"log"
 	"net"
 	"os"
 )
 
 var (
+	cacert  = flag.String("ca", "ca.pem", "Path for CA certificate file")
 	cert    = flag.String("c", "server.pem", "Path for Certificate file")
 	key     = flag.String("k", "server-key.pem", "Path for Key file")
 	listen  = flag.String("l", "127.0.0.1:7443", "Listen address")
 	forward = flag.String("f", "127.0.0.1:72", "Forward address")
+	client  = flag.Bool("vc", false, "Do client verification")
 	verbose = flag.Bool("v", false, "Verbose mode")
 )
 
@@ -42,10 +47,25 @@ func tlsConfig(cert, key string) (*tls.Config, error) {
 		return nil, err
 	}
 
-	return &tls.Config{
+	tlscfg := &tls.Config{
 		Certificates: []tls.Certificate{creds},
 		MinVersion:   tls.VersionTLS13,
 	}, nil
+
+	if *client {
+		certpool := x509.NewCertPool()
+		pem, err := ioutil.ReadFile(*cacert)
+		if err != nil {
+			return nil, err
+		}
+		if !certpool.AppendCertsFromPEM(pem) {
+			return nil, errors.New("Cannot parse client certificate authority")
+		}
+		tlscfg.ClientCAs = certpool
+		tlscfg.ClientAuth = tls.RequireAndVerifyClientCert
+	}
+
+	return tlscfg, nil
 }
 
 func tunnel(conn net.Conn) {
@@ -86,6 +106,12 @@ func server() (net.Listener, error) {
 
 func main() {
 	flag.Parse()
+
+	if *client {
+		if _, err := os.Stat(*cacert); os.IsNotExist(err) {
+			log.Fatal("Cannot find CA certificate.")
+		}
+	}
 
 	if _, err := os.Stat(*cert); os.IsNotExist(err) {
 		log.Fatal("Cannot find certificate.")
