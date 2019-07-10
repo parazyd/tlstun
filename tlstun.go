@@ -29,7 +29,6 @@ import (
 	"io/ioutil"
 	"log"
 	"net"
-	"os"
 )
 
 var (
@@ -119,23 +118,6 @@ func server() (net.Listener, error) {
 
 func main() {
 	flag.Parse()
-
-	if len(os.Args) < 2 {
-		flag.Usage()
-	}
-
-	if *client {
-		if _, err := os.Stat(*cacert); os.IsNotExist(err) {
-			log.Fatal("Cannot find CA certificate.")
-		}
-	}
-
-	if _, err := os.Stat(*cert); os.IsNotExist(err) {
-		log.Fatal("Cannot find certificate.")
-	}
-	if _, err := os.Stat(*key); os.IsNotExist(err) {
-		log.Fatal("Cannot find certificate key.")
-	}
 
 	tcpsock, err := server()
 	if err != nil {
