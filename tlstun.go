@@ -57,7 +57,7 @@ func tlsConfig(cert, key string) (*tls.Config, error) {
 			return nil, err
 		}
 		if !certpool.AppendCertsFromPEM(pem) {
-			return nil, errors.New("Cannot parse client certificate authority")
+			return nil, errors.New("can not parse client certificate authority")
 		}
 		tlscfg.ClientCAs = certpool
 		tlscfg.ClientAuth = tls.RequireAndVerifyClientCert
