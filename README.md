@@ -41,3 +41,22 @@ Usage of ./tlstun:
   -verifyclient
         Do client verification
 ```
+
+tlstun supports two different ways of multiplexing, one being normal TLS
+proxying, and the other being TLS proxying with client certificate
+authentication.
+
+
+### Without client verification
+
+Start tlstun with `-cert` and `-key`, and it will simply provide a TLS
+forward to its destination with the given TLS certificate.
+
+
+### With client verification
+
+With client verification, start tlstun with `-cacert`, `-cert`, `-key`,
+and `-verifyclient` and it will do client certificate verification. This
+means it will only allow access from clients providing a certificate
+signed by the CA certificate that is being loaded/used with tlstun on
+startup with `-cacert`.
