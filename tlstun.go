@@ -70,8 +70,9 @@ func tlsConfig(cert, key string) (*tls.Config, error) {
 	case 12:
 		tlscfg.MinVersion = tls.VersionTLS12
 	case 13:
-	default:
 		tlscfg.MinVersion = tls.VersionTLS13
+	default:
+		log.Fatal("Unsupported TLS version:", *tlsver)
 	}
 
 	return tlscfg, nil
