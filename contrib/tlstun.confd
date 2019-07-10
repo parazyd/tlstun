@@ -1,0 +1,7 @@
+# Parameters to be passed to tlstun
+
+#TLSTUN_ARGS="-cacert /etc/ssl/ca.pem -cert /etc/ssl/server.pem -key /etc/ssl/server.key"
+#TLSTUN_ARGS="$TLSTUN_ARGS -forward 127.0.0.1:72 -listen 0.0.0.0:7443 -verifyclient"
+
+TLSTUN_ARGS="-cert /etc/ssl/server.pem -key /etc/ssl/server.key"
+TLSTUN_ARGS="$TLSTUN_ARGS -forward 127.0.0.1:72 -listen 0.0.0.0:7443"
