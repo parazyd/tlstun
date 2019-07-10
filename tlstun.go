@@ -119,7 +119,7 @@ func server() (net.Listener, error) {
 func main() {
 	flag.Parse()
 
-	if len(os.Args < 2) {
+	if len(os.Args) < 2 {
 		flag.Usage()
 	}
 
