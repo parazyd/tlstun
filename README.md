@@ -5,7 +5,8 @@ tlstun is a simple Go program that will add TLS support for your
 programs that do not have it.
 
 It simply proxies from one TLS-listening host:port to another plaintext
-host:port.
+host:port. If TLS is not your thing, you can also proxy plain TCP
+traffic.
 
 
 Installation
@@ -34,6 +35,8 @@ Usage of ./tlstun:
         Path for Key file (default "server-key.pem")
   -listen string
         Listen address (default "127.0.0.1:7443")
+  -notls
+        Disable TLS and just tunnel plain TCP
   -tlsver int
         TLS version to use (11, 12, 13) (default 13)
   -verbose
@@ -44,7 +47,8 @@ Usage of ./tlstun:
 
 tlstun supports two different ways of multiplexing, one being normal TLS
 proxying, and the other being TLS proxying with client certificate
-authentication.
+authentication. In addition to this, tlstun can also opt-out of TLS and
+proxy plain TCP without encryption by using the `-notls` flag.
 
 
 ### Without client verification

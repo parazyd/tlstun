@@ -39,6 +39,7 @@ var (
 	forward = flag.String("forward", "127.0.0.1:72", "Forward address")
 	client  = flag.Bool("verifyclient", false, "Do client verification")
 	verbose = flag.Bool("verbose", false, "Verbose mode")
+	notls   = flag.Bool("notls", false, "Disable TLS and just tunnel plain TCP")
 	tlsver  = flag.Int("tlsver", 13, "TLS version to use (11, 12, 13)")
 )
 
@@ -106,6 +107,10 @@ func server() (net.Listener, error) {
 	t, err := net.Listen("tcp", *listen)
 	if err != nil {
 		return nil, err
+	}
+
+	if *notls {
+		return t, nil
 	}
 
 	cfg, err := tlsConfig(*cert, *key)
