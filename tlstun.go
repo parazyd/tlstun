@@ -23,8 +23,8 @@ package main
 import (
 	"crypto/tls"
 	"crypto/x509"
-	"errors"
 	"flag"
+	"fmt"
 	"io"
 	"io/ioutil"
 	"log"
@@ -58,7 +58,7 @@ func tlsConfig(cert, key string) (*tls.Config, error) {
 			return nil, err
 		}
 		if !certpool.AppendCertsFromPEM(pem) {
-			return nil, errors.New("can not parse client certificate authority")
+			return nil, fmt.Errorf("can not parse client certificate authority")
 		}
 		tlscfg.ClientCAs = certpool
 		tlscfg.ClientAuth = tls.RequireAndVerifyClientCert
