@@ -1,8 +1,7 @@
 package main
 
 /*
- * Copyright (c) 2019 Dyne.org Foundation
- * tlstun is written and maintained by Ivan Jelincic <parazyd@dyne.org>
+ * Copyright (c) 2019-2020 Ivan J. <parazyd@dyne.org>
  *
  * This file is part of tlstun
  *
