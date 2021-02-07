@@ -1,7 +1,7 @@
 package main
 
 /*
- * Copyright (c) 2019-2020 Ivan J. <parazyd@dyne.org>
+ * Copyright (c) 2019-2021 Ivan J. <parazyd@dyne.org>
  *
  * This file is part of tlstun
  *
