@@ -1,23 +1,20 @@
+// Copyright (c) 2019-2021 Ivan J. <parazyd@dyne.org>
+//
+// This file is part of tlstun
+//
+// This program is free software: you can redistribute it and/or modify
+// it under the terms of the GNU Affero General Public License as published by
+// the Free Software Foundation, either version 3 of the License, or
+// (at your option) any later version.
+//
+// This program is distributed in the hope that it will be useful,
+// but WITHOUT ANY WARRANTY; without even the implied warranty of
+// MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+// GNU Affero General Public License for more details.
+//
+// You should have received a copy of the GNU Affero General Public License
+// along with this program.  If not, see <http://www.gnu.org/licenses/>.
 package main
-
-/*
- * Copyright (c) 2019-2021 Ivan J. <parazyd@dyne.org>
- *
- * This file is part of tlstun
- *
- * This program is free software: you can redistribute it and/or modify
- * it under the terms of the GNU Affero General Public License as published by
- * the Free Software Foundation, either version 3 of the License, or
- * (at your option) any later version.
- *
- * This program is distributed in the hope that it will be useful,
- * but WITHOUT ANY WARRANTY; without even the implied warranty of
- * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
- * GNU Affero General Public License for more details.
- *
- * You should have received a copy of the GNU Affero General Public License
- * along with this program.  If not, see <http://www.gnu.org/licenses/>.
- */
 
 import (
 	"crypto/tls"
@@ -38,7 +35,7 @@ var (
 	forward = flag.String("forward", "127.0.0.1:72", "Forward address")
 	client  = flag.Bool("verifyclient", false, "Do client verification")
 	verbose = flag.Bool("verbose", false, "Verbose mode")
-	notls   = flag.Bool("notls", false, "Disable TLS and just tunnel plain TCP")
+	notls   = flag.Bool("notls", false, "Disable TLS and tunnel plain TCP")
 	tlsver  = flag.Int("tlsver", 13, "TLS version to use (11, 12, 13)")
 )
 
@@ -57,7 +54,7 @@ func tlsConfig(cert, key string) (*tls.Config, error) {
 			return nil, err
 		}
 		if !certpool.AppendCertsFromPEM(pem) {
-			return nil, fmt.Errorf("can not parse client certificate authority")
+			return nil, fmt.Errorf("can't parse client certificate authority")
 		}
 		tlscfg.ClientCAs = certpool
 		tlscfg.ClientAuth = tls.RequireAndVerifyClientCert
