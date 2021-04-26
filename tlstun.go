@@ -33,6 +33,7 @@ var (
 	key     = flag.String("key", "server-key.pem", "Path for Key file")
 	listen  = flag.String("listen", "127.0.0.1:7443", "Listen address")
 	forward = flag.String("forward", "127.0.0.1:72", "Forward address")
+	fwtls   = flag.Bool("forwardtls", false, "Forward using TLS")
 	client  = flag.Bool("verifyclient", false, "Do client verification")
 	verbose = flag.Bool("verbose", false, "Verbose mode")
 	notls   = flag.Bool("notls", false, "Disable TLS and tunnel plain TCP")
@@ -48,7 +49,10 @@ func tlsConfig(cert, key string) (*tls.Config, error) {
 	tlscfg := &tls.Config{Certificates: []tls.Certificate{creds}}
 
 	if *client {
-		certpool := x509.NewCertPool()
+		certpool, _ := x509.SystemCertPool()
+		if certpool == nil {
+			certpool = x509.NewCertPool()
+		}
 		pem, err := ioutil.ReadFile(*cacert)
 		if err != nil {
 			return nil, err
@@ -74,8 +78,16 @@ func tlsConfig(cert, key string) (*tls.Config, error) {
 	return tlscfg, nil
 }
 
-func tunnel(conn net.Conn) {
-	client, err := net.Dial("tcp", *forward)
+func tunnel(conn net.Conn, tlsCfg *tls.Config) {
+	var client net.Conn
+	var err error
+
+	if *fwtls {
+		client, err = tls.Dial("tcp", *forward, tlsCfg)
+	} else {
+		client, err = net.Dial("tcp", *forward)
+	}
+
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -99,7 +111,7 @@ func tunnel(conn net.Conn) {
 	}()
 }
 
-func server() (net.Listener, error) {
+func server(tlsCfg *tls.Config) (net.Listener, error) {
 	t, err := net.Listen("tcp", *listen)
 	if err != nil {
 		return nil, err
@@ -109,18 +121,25 @@ func server() (net.Listener, error) {
 		return t, nil
 	}
 
-	cfg, err := tlsConfig(*cert, *key)
-	if err != nil {
-		return nil, err
-	}
-
-	return tls.NewListener(t, cfg), nil
+	return tls.NewListener(t, tlsCfg), nil
 }
 
 func main() {
 	flag.Parse()
 
-	tcpsock, err := server()
+	var tlsCfg *tls.Config
+	var err error
+
+	if *notls {
+		tlsCfg = nil
+	} else {
+		tlsCfg, err = tlsConfig(*cert, *key)
+		if err != nil {
+			log.Fatal(err)
+		}
+	}
+
+	tcpsock, err := server(tlsCfg)
 	if err != nil {
 		log.Fatal(err)
 	}
@@ -133,6 +152,6 @@ func main() {
 		if *verbose {
 			log.Printf("Accepted connection from %s\n", conn.RemoteAddr())
 		}
-		go tunnel(conn)
+		go tunnel(conn, tlsCfg)
 	}
 }
